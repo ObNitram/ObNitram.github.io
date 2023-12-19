@@ -6,3 +6,6 @@
 Source code : https://github.com/ObNitram/GlobalGameJam2023
 
 Play here : https://obnitram.github.io/projet/unity/GGJ2023
+
+### Cosmobot 2023
+Play here : https://obnitram.github.io/projet/unity/Cosmobot
