@@ -3,6 +3,7 @@ import { defineConfig } from "astro/config";
 import tailwind from "@astrojs/tailwind";
 import sitemap from '@astrojs/sitemap';
 import robotsTxt from 'astro-robots-txt';
+import icon from "astro-icon";
 
 
 const isProd = process.env.NODE_ENV === "production";
@@ -21,6 +22,7 @@ export default defineConfig({
                 }
             ],
         }),
+        icon(),
     ],
     base: "/",
     vite: {

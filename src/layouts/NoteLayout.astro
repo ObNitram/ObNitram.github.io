@@ -2,6 +2,7 @@
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import NoteTag from "../components/NoteTag.astro";
+import { Icon } from "astro-icon/components";
 
 interface Props {
     frontmatter?: {
@@ -29,6 +30,14 @@ const { frontmatter } = Astro.props;
 const pageTitle = frontmatter?.title || "Note - Martin Guillemot";
 const tags = frontmatter?.tags || [];
 const date = frontmatter?.date;
+
+const formattedDate = date
+    ? new Date(date).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+      })
+    : undefined;
 ---
 
 <!doctype html>
@@ -49,19 +58,10 @@ const date = frontmatter?.date;
                     href="/note"
                     class="inline-flex items-center text-sm font-medium text-slate-500 hover:text-primary-600 transition-colors"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
+                    <Icon
+                        name="heroicons-outline:arrow-left"
                         class="h-4 w-4 mr-1"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
+                    />
                     Back to notes
                 </a>
             </div>
@@ -81,23 +81,13 @@ const date = frontmatter?.date;
                             class="flex flex-wrap items-center gap-4 text-sm text-slate-500"
                         >
                             {
-                                date && (
-                                    <div class="flex items-center">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            class="h-4 w-4 mr-1.5 text-slate-400"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
-                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                            />
-                                        </svg>
-                                        {date}
+                                formattedDate && (
+                                    <div class="flex items-center gap-1 leading-none">
+                                        <Icon
+                                            name="heroicons-outline:calendar"
+                                            class="h-4 w-4 mr-1 text-slate-400 shrink-0 align-middle"
+                                        />
+                                        {formattedDate}
                                     </div>
                                 )
                             }

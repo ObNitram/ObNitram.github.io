@@ -1,5 +1,6 @@
 ---
 import type { MarkdownInstance } from "astro";
+import { Icon } from "astro-icon/components";
 import NoteTag from "./NoteTag.astro";
 
 interface Frontmatter {
@@ -16,6 +17,14 @@ interface Props {
 
 const { note, class: className, ...rest } = Astro.props;
 const { title, date, tags } = note.frontmatter;
+
+const formattedDate = date
+    ? new Date(date).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+      })
+    : undefined;
 ---
 
 <article
@@ -25,7 +34,7 @@ const { title, date, tags } = note.frontmatter;
     ]}
     {...rest}
 >
-    <div class="flex justify-between items-start">
+    <div class="flex justify-between items-start md:items-center">
         <h2 class="text-xl font-bold mb-2 text-dark-500">
             <a
                 href={note.url}
@@ -34,7 +43,17 @@ const { title, date, tags } = note.frontmatter;
                 {title}
             </a>
         </h2>
-        {date && <p class="text-sm text-slate-500">{date}</p>}
+        {
+            formattedDate && (
+                <p class="text-sm text-slate-500 whitespace-nowrap ml-2 flex items-center gap-1 leading-none">
+                    <Icon
+                        name="heroicons-outline:calendar"
+                        class="h-4 w-4 mr-1 text-slate-400 shrink-0 align-middle"
+                    />
+                    {formattedDate}
+                </p>
+            )
+        }
     </div>
 
     {
