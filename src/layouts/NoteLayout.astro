@@ -1,6 +1,7 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import NoteTag from "../components/NoteTag.astro";
 
 interface Props {
     frontmatter?: {
@@ -105,12 +106,7 @@ const maxWidth = frontmatter?.maxWidth || "60rem"; // largeur plus grande pour g
                 tags.length > 0 && (
                     <div class="flex flex-wrap gap-2 mb-6 not-prose">
                         {tags.map((tag) => (
-                            <a
-                                href={`/note/tag/${tag}`}
-                                class="px-3 py-1 text-sm bg-primary-100 text-primary-700 rounded-full hover:bg-primary-200 transition-colors"
-                            >
-                                #{tag}
-                            </a>
+                            <NoteTag tag={tag} />
                         ))}
                     </div>
                 )

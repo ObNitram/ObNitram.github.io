@@ -1,0 +1,49 @@
+---
+import type { MarkdownInstance } from "astro";
+import NoteTag from "./NoteTag.astro";
+
+interface Frontmatter {
+    title: string;
+    date?: string;
+    tags?: string[];
+}
+
+interface Props {
+    note: MarkdownInstance<Frontmatter>;
+    class?: string;
+    [key: string]: any;
+}
+
+const { note, class: className, ...rest } = Astro.props;
+const { title, date, tags } = note.frontmatter;
+---
+
+<article
+    class:list={[
+        "note-card relative block bg-white p-6 rounded-lg shadow-sm border border-slate-100 hover:shadow-md transition-shadow",
+        className,
+    ]}
+    {...rest}
+>
+    <div class="flex justify-between items-start">
+        <h2 class="text-xl font-bold mb-2 text-dark-500">
+            <a
+                href={note.url}
+                class="before:absolute before:inset-0 focus:outline-none"
+            >
+                {title}
+            </a>
+        </h2>
+        {date && <p class="text-sm text-slate-500">{date}</p>}
+    </div>
+
+    {
+        tags && tags.length > 0 && (
+            <div class="mt-3 flex flex-wrap gap-2 relative z-10">
+                {tags.map((tag) => (
+                    <NoteTag tag={tag} />
+                ))}
+            </div>
+        )
+    }
+</article>
