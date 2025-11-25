@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import NoteThumbnail from "../../components/NoteThumbnail.astro";
+import NoteTag from "../../components/NoteTag.astro";
 import type { MarkdownInstance } from "astro";
 
 interface Frontmatter {
@@ -28,12 +29,12 @@ const allTags = [
         </div>
         <div class="flex flex-wrap gap-2" id="tag-filters">
           {allTags.map((tag) => (
-            <button
+            <NoteTag
+              tag={tag}
+              onClick={() => {}}
               data-tag={tag}
-              class="tag-button bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm hover:bg-primary-100 hover:text-primary-600 transition-colors border border-transparent cursor-pointer"
-            >
-              #{tag}
-            </button>
+              class="tag-button border-2 border-transparent"
+            />
           ))}
           <button
             id="clear-filters"
@@ -95,30 +96,16 @@ const allTags = [
         if (selectedTags.has(tag)) {
           selectedTags.delete(tag);
           btn.classList.remove(
-            "bg-primary-500",
-            "text-white",
-            "hover:bg-primary-600",
-            "hover:text-white",
-          );
-          btn.classList.add(
-            "bg-slate-100",
-            "text-slate-700",
-            "hover:bg-primary-100",
-            "hover:text-primary-600",
+            "!bg-primary-500",
+            "!text-white",
+            "hover:!bg-primary-600",
           );
         } else {
           selectedTags.add(tag);
-          btn.classList.remove(
-            "bg-slate-100",
-            "text-slate-700",
-            "hover:bg-primary-100",
-            "hover:text-primary-600",
-          );
           btn.classList.add(
-            "bg-primary-500",
-            "text-white",
-            "hover:bg-primary-600",
-            "hover:text-white",
+            "!bg-primary-500",
+            "!text-white",
+            "hover:!bg-primary-600",
           );
         }
         updateVisibility();
@@ -129,16 +116,9 @@ const allTags = [
       selectedTags.clear();
       tagButtons.forEach((btn) => {
         btn.classList.remove(
-          "bg-primary-500",
-          "text-white",
-          "hover:bg-primary-600",
-          "hover:text-white",
-        );
-        btn.classList.add(
-          "bg-slate-100",
-          "text-slate-700",
-          "hover:bg-primary-100",
-          "hover:text-primary-600",
+          "!bg-primary-500",
+          "!text-white",
+          "hover:!bg-primary-600",
         );
       });
       updateVisibility();

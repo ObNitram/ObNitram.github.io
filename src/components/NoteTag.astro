@@ -2,9 +2,10 @@
 interface Props {
     tag: string;
     onClick?: () => void;
+    [key: string]: any;
 }
 
-const { tag, onClick } = Astro.props;
+const { tag, onClick, class: className, ...rest } = Astro.props;
 
 const colors = [
     "bg-red-100 text-red-800",
@@ -40,8 +41,10 @@ const href = onClick ? undefined : `/note/tag/${tag}`;
         "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium transition-colors",
         colorClass,
         "hover:opacity-80",
+        className,
     ]}
     {...onClick ? { type: "button" } : {}}
+    {...rest}
 >
     {tag}
 </Element>
