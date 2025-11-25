@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/NoteLayout.astro
 title: My First Note
 date: 2023-11-25
 tags: ["personal", "astro"]

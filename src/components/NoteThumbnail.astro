@@ -1,22 +1,17 @@
 ---
-import type { MarkdownInstance } from "astro";
+import type { CollectionEntry } from "astro:content";
 import { Icon } from "astro-icon/components";
 import NoteTag from "./NoteTag.astro";
 
-interface Frontmatter {
-    title: string;
-    date?: string;
-    tags?: string[];
-}
-
 interface Props {
-    note: MarkdownInstance<Frontmatter>;
+    note: CollectionEntry<"notes">;
     class?: string;
     [key: string]: any;
 }
 
 const { note, class: className, ...rest } = Astro.props;
-const { title, date, tags } = note.frontmatter;
+const { title, date, tags } = note.data;
+const url = `/note/${note.slug}`;
 
 const formattedDate = date
     ? new Date(date).toLocaleDateString("en-US", {
@@ -37,7 +32,7 @@ const formattedDate = date
     <div class="flex justify-between items-start md:items-center">
         <h2 class="text-xl font-bold mb-2 text-dark-500">
             <a
-                href={note.url}
+                href={url}
                 class="before:absolute before:inset-0 focus:outline-none"
             >
                 {title}
