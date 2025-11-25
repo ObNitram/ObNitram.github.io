@@ -3,28 +3,28 @@ import Layout from '../../layouts/Layout.astro';
 
 const posts = [
   {
-    title: "Mon premier article avec Astro",
+    title: "My first article with Astro",
     date: "2023-10-01",
-    description: "Découverte du framework Astro et de ses avantages pour la performance.",
+    description: "Discovering the Astro framework and its performance benefits.",
     slug: "mon-premier-article"
   },
   {
-    title: "Pourquoi j'aime Tailwind CSS",
+    title: "Why I love Tailwind CSS",
     date: "2023-10-15",
-    description: "Un retour d'expérience sur l'utilisation de Tailwind CSS dans mes projets.",
+    description: "A feedback on using Tailwind CSS in my projects.",
     slug: "pourquoi-tailwind"
   },
   {
-    title: "L'avenir du développement web",
+    title: "The future of web development",
     date: "2023-11-05",
-    description: "Réflexions sur les tendances actuelles et futures du web.",
+    description: "Reflections on current and future web trends.",
     slug: "avenir-web"
   }
 ];
 ---
 
-<Layout title="Blog - Mon Portfolio">
-  <h1 class="text-3xl font-bold mb-8 text-primary-600">Mon Blog</h1>
+<Layout title="Blog - My Portfolio">
+  <h1 class="text-3xl font-bold mb-8 text-primary-600">My Blog</h1>
   
   <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
     {posts.map((post) => (
@@ -37,7 +37,7 @@ const posts = [
         </h2>
         <p class="text-slate-600 mb-4">{post.description}</p>
         <a href={`/blog/${post.slug}`} class="text-primary-500 font-medium hover:underline">
-          Lire la suite &rarr;
+          Read more &rarr;
         </a>
       </article>
     ))}

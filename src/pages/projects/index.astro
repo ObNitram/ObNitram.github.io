@@ -4,27 +4,27 @@ import Layout from '../../layouts/Layout.astro';
 const projects = [
   {
     title: "GlobalGameJam2023",
-    description: "Un jeu Unity 3D créé pour la Global Game Jam 2023. Découvrez notre gameplay unique directement dans votre navigateur web !",
+    description: "A Unity 3D game created for the Global Game Jam 2023. Experience our unique gameplay directly in your web browser!",
     tags: ["C#", "Unity 3D", "Game Jam"],
     link: "https://github.com/ObNitram/GlobalGameJam2023"
   },
   {
     title: "sorbonne-calendar",
-    description: "Outil lié au calendrier universitaire.",
+    description: "Tool related to the university calendar.",
     tags: ["Python"],
     link: "https://github.com/ObNitram/sorbonne-calendar"
   },
   {
-    title: "Portfolio Personnel",
-    description: "Ce site web ! Construit avec Astro et Tailwind CSS pour une performance maximale.",
+    title: "Personal Portfolio",
+    description: "This website! Built with Astro and Tailwind CSS for maximum performance.",
     tags: ["Astro", "Tailwind"],
     link: "https://github.com/ObNitram"
   }
 ];
 ---
 
-<Layout title="Projets - Martin Guillemot">
-  <h1 class="text-3xl font-bold mb-8 text-primary-600">Mes Projets</h1>
+<Layout title="Projects - Martin Guillemot">
+  <h1 class="text-3xl font-bold mb-8 text-primary-600">My Projects</h1>
   
   <div class="grid gap-6 md:grid-cols-2">
     {projects.map((project) => (
@@ -39,7 +39,7 @@ const projects = [
           ))}
         </div>
         <a href={project.link} target="_blank" rel="noopener noreferrer" class="inline-block bg-primary-500 text-white px-4 py-2 rounded hover:bg-primary-600 transition-colors text-center">
-          Voir le projet
+          View project
         </a>
       </div>
     ))}
@@ -47,7 +47,7 @@ const projects = [
   
   <div class="mt-12 text-center">
     <a href="https://github.com/ObNitram?tab=repositories" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:underline font-medium text-lg">
-      Voir tous mes projets sur GitHub &rarr;
+      View all my projects on GitHub &rarr;
     </a>
   </div>
 </Layout>

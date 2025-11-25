@@ -1,0 +1,119 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import type { MarkdownInstance } from 'astro';
+
+interface Frontmatter {
+  title: string;
+  date?: string;
+  tags?: string[];
+}
+
+const notes = Object.values(import.meta.glob<MarkdownInstance<Frontmatter>>('./*.md', { eager: true }));
+const allTags = [...new Set(notes.flatMap(note => note.frontmatter.tags || []))];
+---
+
+<Layout title="Personal Notes">
+  <h1 class="text-3xl font-bold mb-8 text-primary-600">Personal Notes</h1>
+  
+  {allTags.length > 0 && (
+    <div class="mb-8">
+      <div class="text-slate-600 mb-2">Filter by tags (click to select multiple):</div>
+      <div class="flex flex-wrap gap-2" id="tag-filters">
+        {allTags.map((tag) => (
+          <button 
+            data-tag={tag}
+            class="tag-button bg-slate-100 text-slate-700 px-3 py-1 rounded-full text-sm hover:bg-primary-100 hover:text-primary-600 transition-colors border border-transparent cursor-pointer"
+          >
+            #{tag}
+          </button>
+        ))}
+        <button id="clear-filters" class="hidden text-sm text-red-500 hover:underline px-3 py-1">
+          Clear filters
+        </button>
+      </div>
+    </div>
+  )}
+  
+  <div class="grid gap-4" id="notes-grid">
+    {notes.map((note) => (
+      <a 
+        href={note.url} 
+        class="note-card block bg-white p-6 rounded-lg shadow-sm border border-slate-100 hover:shadow-md transition-shadow"
+        data-tags={JSON.stringify(note.frontmatter.tags || [])}
+      >
+        <div class="flex justify-between items-start">
+          <h2 class="text-xl font-bold mb-2 text-dark-500">
+            {note.frontmatter.title}
+          </h2>
+          {note.frontmatter.date && <p class="text-sm text-slate-500">{note.frontmatter.date}</p>}
+        </div>
+        
+        {note.frontmatter.tags && (
+          <div class="mt-3 flex flex-wrap gap-2">
+            {note.frontmatter.tags.map((tag: string) => (
+              <span class="bg-slate-50 text-slate-600 px-2 py-0.5 rounded text-xs border border-slate-200">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </a>
+    ))}
+  </div>
+
+  <script>
+    const tagButtons = document.querySelectorAll('.tag-button');
+    const clearButton = document.getElementById('clear-filters');
+    const noteCards = document.querySelectorAll('.note-card');
+    let selectedTags = new Set();
+
+    function updateVisibility() {
+      if (selectedTags.size === 0) {
+        noteCards.forEach(card => card.classList.remove('hidden'));
+        if (clearButton) clearButton.classList.add('hidden');
+        return;
+      }
+
+      if (clearButton) clearButton.classList.remove('hidden');
+      noteCards.forEach(card => {
+        // @ts-ignore
+        const cardTags = JSON.parse(card.dataset.tags || '[]');
+        
+        // AND logic: Note must have ALL selected tags
+        const hasAllTags = [...selectedTags].every(tag => cardTags.includes(tag));
+        
+        if (hasAllTags) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    tagButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // @ts-ignore
+        const tag = btn.dataset.tag;
+        if (selectedTags.has(tag)) {
+          selectedTags.delete(tag);
+          btn.classList.remove('bg-primary-500', 'text-white', 'hover:bg-primary-600', 'hover:text-white');
+          btn.classList.add('bg-slate-100', 'text-slate-700', 'hover:bg-primary-100', 'hover:text-primary-600');
+        } else {
+          selectedTags.add(tag);
+          btn.classList.remove('bg-slate-100', 'text-slate-700', 'hover:bg-primary-100', 'hover:text-primary-600');
+          btn.classList.add('bg-primary-500', 'text-white', 'hover:bg-primary-600', 'hover:text-white');
+        }
+        updateVisibility();
+      });
+    });
+
+    clearButton?.addEventListener('click', () => {
+      selectedTags.clear();
+      tagButtons.forEach(btn => {
+        btn.classList.remove('bg-primary-500', 'text-white', 'hover:bg-primary-600', 'hover:text-white');
+        btn.classList.add('bg-slate-100', 'text-slate-700', 'hover:bg-primary-100', 'hover:text-primary-600');
+      });
+      updateVisibility();
+    });
+  </script>
+</Layout>
