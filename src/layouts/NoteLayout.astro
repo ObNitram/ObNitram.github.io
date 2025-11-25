@@ -48,6 +48,92 @@ const formattedDate = date
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
         <title>{pageTitle}</title>
+        <style is:global>
+            /* GitHub Alert Styles */
+            .markdown-alert {
+                padding: 0.25rem 0.75rem;
+                margin-bottom: 0.5rem;
+                border-left: 0.25em solid;
+                border-radius: 0.25rem;
+            }
+            
+            .markdown-alert > *:first-child {
+                margin-top: 0 !important;
+            }
+
+            .markdown-alert > *:last-child {
+                margin-bottom: 0 !important;
+            }
+
+            .markdown-alert p {
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+            }
+
+            .markdown-alert-title {
+                display: flex;
+                align-items: center;
+                font-weight: bold;
+                font-size: 0.9em;
+                margin-bottom: 0;
+            }
+
+            .markdown-alert-title svg {
+                margin-right: 0.5rem;
+                width: 16px;
+                height: 16px;
+            }
+
+            /* Note */
+            .markdown-alert-note {
+                border-color: #0969da;
+                background-color: #ddf4ff;
+                color: #0969da;
+            }
+            .markdown-alert-note .markdown-alert-title {
+                color: #0969da;
+            }
+
+            /* Tip */
+            .markdown-alert-tip {
+                border-color: #1a7f37;
+                background-color: #dafbe1;
+                color: #1a7f37;
+            }
+            .markdown-alert-tip .markdown-alert-title {
+                color: #1a7f37;
+            }
+
+            /* Important */
+            .markdown-alert-important {
+                border-color: #8250df;
+                background-color: #f6f0ff;
+                color: #8250df;
+            }
+            .markdown-alert-important .markdown-alert-title {
+                color: #8250df;
+            }
+
+            /* Warning */
+            .markdown-alert-warning {
+                border-color: #9a6700;
+                background-color: #fff8c5;
+                color: #9a6700;
+            }
+            .markdown-alert-warning .markdown-alert-title {
+                color: #9a6700;
+            }
+
+            /* Caution */
+            .markdown-alert-caution {
+                border-color: #d1242f;
+                background-color: #ffebe9;
+                color: #d1242f;
+            }
+            .markdown-alert-caution .markdown-alert-title {
+                color: #d1242f;
+            }
+        </style>
     </head>
     <body class="flex flex-col min-h-screen bg-slate-100 text-slate-800">
         <Header />
