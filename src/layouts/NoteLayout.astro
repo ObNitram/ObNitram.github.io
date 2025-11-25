@@ -28,18 +28,7 @@ interface Props {
 const { frontmatter } = Astro.props;
 const pageTitle = frontmatter?.title || "Note - Martin Guillemot";
 const tags = frontmatter?.tags || [];
-
-// Valeurs par défaut
-const h1Size = frontmatter?.h1Size || "2.25rem";
-const h2Size = frontmatter?.h2Size || "1.875rem";
-const h3Size = frontmatter?.h3Size || "1.5rem";
-const h4Size = frontmatter?.h4Size || "1.25rem";
-const textSize = frontmatter?.textSize || "1rem";
-const textColor = frontmatter?.textColor || "#1e293b"; // slate-800
-const headingColor = frontmatter?.headingColor || "#0f172a"; // dark-500/slate-900
-const linkColor = frontmatter?.linkColor || "#7c3aed"; // primary-600
-const linkHoverColor = frontmatter?.linkHoverColor || "#8b5cf6"; // primary-500
-const maxWidth = frontmatter?.maxWidth || "60rem"; // largeur plus grande pour grands écrans
+const date = frontmatter?.date;
 ---
 
 <!doctype html>
@@ -50,69 +39,90 @@ const maxWidth = frontmatter?.maxWidth || "60rem"; // largeur plus grande pour g
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
         <title>{pageTitle}</title>
-        <style
-            define:vars={{
-                h1Size,
-                h2Size,
-                h3Size,
-                h4Size,
-                textSize,
-                textColor,
-                headingColor,
-                linkColor,
-                linkHoverColor,
-                maxWidth,
-            }}
-        >
-            .note-content.prose {
-                max-width: var(--maxWidth) !important;
-                width: 100%;
-            }
-            .note-content {
-                color: var(--textColor);
-                font-size: var(--textSize);
-            }
-            .note-content :global(h1) {
-                font-size: var(--h1Size);
-                color: var(--headingColor);
-            }
-            .note-content :global(h2) {
-                font-size: var(--h2Size);
-                color: var(--headingColor);
-            }
-            .note-content :global(h3) {
-                font-size: var(--h3Size);
-                color: var(--headingColor);
-            }
-            .note-content :global(h4) {
-                font-size: var(--h4Size);
-                color: var(--headingColor);
-            }
-            .note-content :global(a) {
-                color: var(--linkColor);
-            }
-            .note-content :global(a:hover) {
-                color: var(--linkHoverColor);
-            }
-        </style>
     </head>
-    <body class="flex flex-col min-h-screen bg-slate-50 text-dark-500">
+    <body class="flex flex-col min-h-screen bg-slate-100 text-slate-800">
         <Header />
-        <main class="note-content flex-grow mx-auto px-4 py-8 prose">
-            <h1 style={`font-size: ${h1Size}; color: ${headingColor};`}>
-                {pageTitle}
-            </h1>
-            {
-                tags.length > 0 && (
-                    <div class="flex flex-wrap gap-2 mb-6 not-prose">
-                        {tags.map((tag) => (
-                            <NoteTag tag={tag} />
-                        ))}
+
+        <main class="flex-grow container mx-auto px-4 py-8 max-w-4xl">
+            <div class="mb-6">
+                <a
+                    href="/note"
+                    class="inline-flex items-center text-sm font-medium text-slate-500 hover:text-primary-600 transition-colors"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4 mr-1"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Back to notes
+                </a>
+            </div>
+
+            <article
+                class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden"
+            >
+                <div class="px-4 pt-8 pb-8 md:px-12 md:pt-12">
+                    <header class="mb-8 border-b border-slate-100 pb-8">
+                        <h1
+                            class="text-2xl md:text-4xl font-extrabold text-slate-900 tracking-tight mb-4"
+                        >
+                            {pageTitle}
+                        </h1>
+
+                        <div
+                            class="flex flex-wrap items-center gap-4 text-sm text-slate-500"
+                        >
+                            {
+                                date && (
+                                    <div class="flex items-center">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            class="h-4 w-4 mr-1.5 text-slate-400"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                            />
+                                        </svg>
+                                        {date}
+                                    </div>
+                                )
+                            }
+
+                            {
+                                tags.length > 0 && (
+                                    <div class="flex flex-wrap gap-2">
+                                        {tags.map((tag) => (
+                                            <NoteTag tag={tag} />
+                                        ))}
+                                    </div>
+                                )
+                            }
+                        </div>
+                    </header>
+
+                    <div
+                        class="prose prose-slate md:prose-lg max-w-none prose-headings:font-bold prose-headings:text-slate-900 prose-a:text-primary-600 prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl"
+                    >
+                        <slot />
                     </div>
-                )
-            }
-            <slot />
+                </div>
+            </article>
         </main>
+
         <Footer />
     </body>
 </html>
