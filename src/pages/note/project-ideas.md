@@ -1,11 +1,9 @@
 ---
-layout: ../../layouts/Layout.astro
+layout: ../../layouts/NoteLayout.astro
 title: Ideas for Projects
 date: 2023-11-26
 tags: ["ideas", "projects"]
 ---
-
-# Project Ideas
 
 Here are some ideas for future projects:
 

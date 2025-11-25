@@ -1,11 +1,10 @@
 ---
-layout: ../../layouts/Layout.astro
+layout: ../../layouts/NoteLayout.astro
 title: My First Note
 date: 2023-11-25
 tags: ["personal", "astro"]
 ---
 
-# My First Note
 
 This is a personal note written in Markdown.
 
@@ -23,22 +22,17 @@ You can write anything here using standard Markdown syntax.
 
 ##### rdgaergdsfghdsfh ergeagd sdfgsfdhg
 
-###### rwgferrhgsd reg se etdg 
+###### rwgferrhgsd reg se etdg
 
->fwefer erg erg 
+>fwefer erg erg
 
-fewf *fewfewf* fwef **fewfwef** fwef  _fewfwef_ fwef ~~fewfwef~~ fwef
+fewf *fewfewf* fwef **fewfwef** fwef  fewfwef fwef ~~fewfwef~~ fwef
 
 [ObNitram](https://obnitram.github.io)
-
-
 
 - Item 1
 - Item 2
 - Item 3
-
-
-
 
 ```javascript
 console.log("Hello, world!");
@@ -52,11 +46,9 @@ print("Hello, world!")
 echo "Hello, world!"
 ```
 
-
-
 ```html
 <h1>Hello, world!</h1>
 ```
+
 wefwef
 reg  er gwergwerg e rtfgerdhgdgshsfgh
-

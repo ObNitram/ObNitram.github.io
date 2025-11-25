@@ -1,0 +1,122 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+    frontmatter?: {
+        title: string;
+        tags?: string[];
+        // Tailles des titres (Tailwind classes)
+        h1Size?: string;
+        h2Size?: string;
+        h3Size?: string;
+        h4Size?: string;
+        // Taille du texte
+        textSize?: string;
+        // Couleurs
+        textColor?: string;
+        headingColor?: string;
+        linkColor?: string;
+        linkHoverColor?: string;
+        // Largeur max du contenu
+        maxWidth?: string;
+        [key: string]: any;
+    };
+}
+
+const { frontmatter } = Astro.props;
+const pageTitle = frontmatter?.title || "Note - Martin Guillemot";
+const tags = frontmatter?.tags || [];
+
+// Valeurs par défaut
+const h1Size = frontmatter?.h1Size || "2.25rem";
+const h2Size = frontmatter?.h2Size || "1.875rem";
+const h3Size = frontmatter?.h3Size || "1.5rem";
+const h4Size = frontmatter?.h4Size || "1.25rem";
+const textSize = frontmatter?.textSize || "1rem";
+const textColor = frontmatter?.textColor || "#1e293b"; // slate-800
+const headingColor = frontmatter?.headingColor || "#0f172a"; // dark-500/slate-900
+const linkColor = frontmatter?.linkColor || "#7c3aed"; // primary-600
+const linkHoverColor = frontmatter?.linkHoverColor || "#8b5cf6"; // primary-500
+const maxWidth = frontmatter?.maxWidth || "60rem"; // largeur plus grande pour grands écrans
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{pageTitle}</title>
+        <style
+            define:vars={{
+                h1Size,
+                h2Size,
+                h3Size,
+                h4Size,
+                textSize,
+                textColor,
+                headingColor,
+                linkColor,
+                linkHoverColor,
+                maxWidth,
+            }}
+        >
+            .note-content.prose {
+                max-width: var(--maxWidth) !important;
+                width: 100%;
+            }
+            .note-content {
+                color: var(--textColor);
+                font-size: var(--textSize);
+            }
+            .note-content :global(h1) {
+                font-size: var(--h1Size);
+                color: var(--headingColor);
+            }
+            .note-content :global(h2) {
+                font-size: var(--h2Size);
+                color: var(--headingColor);
+            }
+            .note-content :global(h3) {
+                font-size: var(--h3Size);
+                color: var(--headingColor);
+            }
+            .note-content :global(h4) {
+                font-size: var(--h4Size);
+                color: var(--headingColor);
+            }
+            .note-content :global(a) {
+                color: var(--linkColor);
+            }
+            .note-content :global(a:hover) {
+                color: var(--linkHoverColor);
+            }
+        </style>
+    </head>
+    <body class="flex flex-col min-h-screen bg-slate-50 text-dark-500">
+        <Header />
+        <main class="note-content flex-grow mx-auto px-4 py-8 prose">
+            <h1 style={`font-size: ${h1Size}; color: ${headingColor};`}>
+                {pageTitle}
+            </h1>
+            {
+                tags.length > 0 && (
+                    <div class="flex flex-wrap gap-2 mb-6 not-prose">
+                        {tags.map((tag) => (
+                            <a
+                                href={`/note/tag/${tag}`}
+                                class="px-3 py-1 text-sm bg-primary-100 text-primary-700 rounded-full hover:bg-primary-200 transition-colors"
+                            >
+                                #{tag}
+                            </a>
+                        ))}
+                    </div>
+                )
+            }
+            <slot />
+        </main>
+        <Footer />
+    </body>
+</html>
