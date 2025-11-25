@@ -3,9 +3,43 @@ title: The Scala Programming Language
 date: 2023-11-25
 tags: ["personal", "astro"]
 ---
+import NoteTag from '../../../../components/NoteTag.astro';
 
 Scala is a strong statically typed programming language that combines object-oriented and functional programming paradigms. It is designed to be concise, elegant, and expressive, making it a popular choice for building scalable applications.
 
+## Scala Type Hierarchy
+
+```mermaid
+classDiagram
+    class Any
+    class AnyVal
+    class AnyRef
+    class Unit
+    class Boolean
+    class Char
+    class Int
+    class Double
+    class Null
+    class Nothing
+
+    Any <|-- AnyVal
+    Any <|-- AnyRef
+    AnyVal <|-- Unit
+    AnyVal <|-- Boolean
+    AnyVal <|-- Char
+    AnyVal <|-- Int
+    AnyVal <|-- Double
+    AnyRef <|-- Null
+    AnyRef <|-- String
+    AnyRef <|-- List
+    Null <|-- Nothing
+    Unit <|-- Nothing
+    Boolean <|-- Nothing
+    Int <|-- Nothing
+    Double <|-- Nothing
+    String <|-- Nothing
+    List <|-- Nothing
+```
 
 ## Key Features of Scala
 

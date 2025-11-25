@@ -15,7 +15,9 @@
     "@iconify-json/heroicons-outline": "^1.2.1",
     "astro": "^5.16.0",
     "astro-icon": "^1.1.5",
+    "astro-mermaid": "^1.1.0",
     "astro-robots-txt": "^1.0.0",
+    "mermaid": "^11.12.1",
     "remark-directive": "^4.0.0",
     "remark-github-blockquote-alert": "^2.0.0"
   },

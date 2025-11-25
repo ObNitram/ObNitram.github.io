@@ -7,6 +7,7 @@ import icon from "astro-icon";
 import mdx from "@astrojs/mdx";
 import remarkDirective from "remark-directive";
 import { remarkAlert } from "remark-github-blockquote-alert";
+import mermaid from "astro-mermaid";
 
 
 const isProd = process.env.NODE_ENV === "production";
@@ -30,6 +31,9 @@ export default defineConfig({
         }),
         icon(),
         mdx(),
+        mermaid({
+            autoTheme: true
+        }),
     ],
     base: "/",
     vite: {
