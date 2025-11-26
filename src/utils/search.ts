@@ -1,21 +1,24 @@
-export function parseSearchQuery(query: string): { searchTags: string[], titleSearch: string } {
-    let searchTags: string[] = [];
-    let titleSearch = query;
+export function parseSearchQuery(query: string): { searchTags: string[], term: string, isPath: boolean } {
+    if (query.startsWith('/')) {
+        const parts = query.slice(1).split('/');
+        const term = parts.pop()?.trim() || "";
+        const searchTags = parts.filter(p => p.trim().length > 0).map(p => p.trim());
+        return { searchTags, term, isPath: true };
+    } else {
+        return { searchTags: [], term: query, isPath: false };
+    }2
+}
 
-    if (query.includes('/')) {
-        const parts = query.split('/').map(p => p.trim());
-        if (query.endsWith('/')) {
-            // "tag1/tag2/" -> tags: tag1, tag2; title: ""
-            searchTags = parts.filter(p => p.length > 0);
-            titleSearch = "";
-        } else {
-            // "tag1/tag2/name" -> tags: tag1, tag2; title: name
-            const potentialTitle = parts.pop();
-            searchTags = parts.filter(p => p.length > 0);
-            titleSearch = potentialTitle || "";
+function fuzzyMatch(search: string, text: string): boolean {
+    let searchIdx = 0;
+    let textIdx = 0;
+    while (searchIdx < search.length && textIdx < text.length) {
+        if (search[searchIdx] === text[textIdx]) {
+            searchIdx++;
         }
+        textIdx++;
     }
-    return { searchTags, titleSearch };
+    return searchIdx === search.length;
 }
 
 export function isCardVisible(
@@ -23,20 +26,34 @@ export function isCardVisible(
     cardTitle: string,
     selectedTags: Set<string>,
     searchTags: string[],
-    titleSearch: string
+    term: string,
+    isPath: boolean
 ): boolean {
     // 1. Check Button Tags (selectedTags)
     const hasButtonTags = [...selectedTags].every((tag) =>
         cardTags.includes(tag),
     );
 
-    // 2. Check Search Input Tags (searchTags)
-    const hasSearchTags = searchTags.every(searchTag =>
-        cardTags.some(cardTag => cardTag.toLowerCase().includes(searchTag))
-    );
+    if (!hasButtonTags) return false;
 
-    // 3. Check Title
-    const matchesTitle = cardTitle.includes(titleSearch);
+    if (isPath) {
+        // Path Mode:
+        // 1. Must match all definite searchTags (folders)
+        const hasDefiniteTags = searchTags.every(searchTag =>
+            cardTags.some(cardTag => fuzzyMatch(searchTag, cardTag.toLowerCase()))
+        );
 
-    return hasButtonTags && hasSearchTags && matchesTitle;
+        if (!hasDefiniteTags) return false;
+
+        // 2. Last term can be a partial tag OR a partial title
+        if (term === "") return true;
+
+        const matchesTag = cardTags.some(cardTag => fuzzyMatch(term, cardTag.toLowerCase()));
+        const matchesTitle = fuzzyMatch(term, cardTitle);
+
+        return matchesTag || matchesTitle;
+    } else {
+        // Simple Mode: Title search only
+        return fuzzyMatch(term, cardTitle);
+    }
 }

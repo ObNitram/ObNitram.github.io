@@ -91,11 +91,9 @@ const allTags = [...new Set(notes.flatMap((note) => note.data.tags || []))];
 
     function updateVisibility() {
       visibleCards = [];
-      const { searchTags, titleSearch } = parseSearchQuery(searchQuery);
+      const { searchTags, term, isPath } = parseSearchQuery(searchQuery);
       const hasActiveFilters =
-        selectedTags.size > 0 ||
-        searchTags.length > 0 ||
-        titleSearch.length > 0;
+        selectedTags.size > 0 || searchTags.length > 0 || term.length > 0;
 
       if (clearButton) {
         if (hasActiveFilters) clearButton.classList.remove("hidden");
@@ -116,7 +114,8 @@ const allTags = [...new Set(notes.flatMap((note) => note.data.tags || []))];
             cardTitle,
             selectedTags,
             searchTags,
-            titleSearch,
+            term,
+            isPath,
           );
         }
 
