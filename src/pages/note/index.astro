@@ -15,7 +15,7 @@ const allTags = [...new Set(notes.flatMap((note) => note.data.tags || []))];
     <input
       type="text"
       id="search-input"
-      placeholder="Search notes..."
+      placeholder="Search notes... (e.g. 'tag1/tag2/title')"
       class="w-full px-4 py-2 rounded-lg border border-slate-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition-all"
     />
   </div>
@@ -59,11 +59,13 @@ const allTags = [...new Set(notes.flatMap((note) => note.data.tags || []))];
   </div>
 
   <script>
+    import { parseSearchQuery, isCardVisible } from "../../utils/search";
+
     const tagButtons = document.querySelectorAll(".tag-button");
     const clearButton = document.getElementById("clear-filters");
     const searchInput = document.getElementById("search-input");
     const noteCards = document.querySelectorAll(".note-card");
-    let selectedTags = new Set();
+    let selectedTags = new Set<string>();
     let searchQuery = "";
     let selectedIndex = 0;
     let visibleCards: Element[] = [];
@@ -89,7 +91,11 @@ const allTags = [...new Set(notes.flatMap((note) => note.data.tags || []))];
 
     function updateVisibility() {
       visibleCards = [];
-      const hasActiveFilters = selectedTags.size > 0 || searchQuery.length > 0;
+      const { searchTags, titleSearch } = parseSearchQuery(searchQuery);
+      const hasActiveFilters =
+        selectedTags.size > 0 ||
+        searchTags.length > 0 ||
+        titleSearch.length > 0;
 
       if (clearButton) {
         if (hasActiveFilters) clearButton.classList.remove("hidden");
@@ -105,15 +111,13 @@ const allTags = [...new Set(notes.flatMap((note) => note.data.tags || []))];
         let isVisible = true;
 
         if (hasActiveFilters) {
-          // AND logic: Note must have ALL selected tags
-          const hasAllTags = [...selectedTags].every((tag) =>
-            cardTags.includes(tag),
+          isVisible = isCardVisible(
+            cardTags,
+            cardTitle,
+            selectedTags,
+            searchTags,
+            titleSearch,
           );
-          const matchesSearch = cardTitle.includes(searchQuery);
-
-          if (!hasAllTags || !matchesSearch) {
-            isVisible = false;
-          }
         }
 
         if (isVisible) {
