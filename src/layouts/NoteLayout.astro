@@ -2,6 +2,7 @@
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import NoteTag from "../components/NoteTag.astro";
+import SEO from "../components/SEO.astro";
 import { Icon } from "astro-icon/components";
 import { siteConfig } from "../config";
 
@@ -15,6 +16,7 @@ interface Props {
     frontmatter?: {
         title: string;
         tags?: string[];
+        description?: string;
         // Tailles des titres (Tailwind classes)
         h1Size?: string;
         h2Size?: string;
@@ -39,6 +41,7 @@ const { frontmatter, headings = [], slug = "" } = Astro.props;
 const pageTitle = frontmatter?.title || "Note - Martin Guillemot";
 const tags = frontmatter?.tags || [];
 const date = frontmatter?.date;
+const description = frontmatter?.description || `${pageTitle} - Notes de Martin Guillemot`;
 const editUrl = `${siteConfig.gitUrlForModification}${slug}.mdx`;
 
 // Filtrer pour n'avoir que les h2 et h3
@@ -61,6 +64,13 @@ const formattedDate = date
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
         <title>{pageTitle}</title>
+        <SEO 
+            title={pageTitle}
+            description={description}
+            type="article"
+            publishedTime={date}
+            tags={tags}
+        />
         <style is:global>
             /* GitHub Alert Styles */
             .markdown-alert {

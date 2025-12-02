@@ -1,0 +1,122 @@
+---
+import { siteConfig } from "../config";
+
+interface Props {
+    title?: string;
+    description?: string;
+    image?: string;
+    type?: "website" | "article";
+    publishedTime?: Date;
+    modifiedTime?: Date;
+    tags?: string[];
+    noindex?: boolean;
+}
+
+const {
+    title = siteConfig.siteName,
+    description = siteConfig.description,
+    image = siteConfig.ogImage,
+    type = "website",
+    publishedTime,
+    modifiedTime,
+    tags = [],
+    noindex = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, siteConfig.siteUrl);
+const ogImageURL = new URL(image, siteConfig.siteUrl);
+
+// JSON-LD structured data
+const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": type === "article" ? "Article" : "WebSite",
+    name: title,
+    description: description,
+    url: canonicalURL.href,
+    image: ogImageURL.href,
+    author: {
+        "@type": "Person",
+        name: siteConfig.author,
+        url: siteConfig.siteUrl,
+    },
+    ...(type === "article" &&
+        publishedTime && {
+            datePublished: publishedTime.toISOString(),
+            dateModified: (modifiedTime || publishedTime).toISOString(),
+        }),
+    ...(type === "website" && {
+        potentialAction: {
+            "@type": "SearchAction",
+            target: `${siteConfig.siteUrl}/note?q={search_term_string}`,
+            "query-input": "required name=search_term_string",
+        },
+    }),
+};
+
+const personJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: siteConfig.author,
+    url: siteConfig.siteUrl,
+    sameAs: [
+        siteConfig.social.github,
+        // siteConfig.social.twitter ? `https://twitter.com/${siteConfig.social.twitter.replace('@', '')}` : null,
+    ].filter(Boolean),
+    jobTitle: "Software Developer",
+    knowsAbout: [
+        "Flutter",
+        "Unity 3D",
+        "Software Engineering",
+        "Web Development",
+    ],
+};
+---
+
+<!-- Primary Meta Tags -->
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="author" content={siteConfig.author} />
+<link rel="canonical" href={canonicalURL} />
+
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImageURL} />
+<meta property="og:site_name" content={siteConfig.siteName} />
+<meta property="og:locale" content="fr_FR" />
+
+{
+    type === "article" && publishedTime && (
+        <>
+            <meta
+                property="article:published_time"
+                content={publishedTime.toISOString()}
+            />
+            {modifiedTime && (
+                <meta
+                    property="article:modified_time"
+                    content={modifiedTime.toISOString()}
+                />
+            )}
+            <meta property="article:author" content={siteConfig.author} />
+            {tags.map((tag) => (
+                <meta property="article:tag" content={tag} />
+            ))}
+        </>
+    )
+}
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageURL} />
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+<script type="application/ld+json" set:html={JSON.stringify(personJsonLd)} />
