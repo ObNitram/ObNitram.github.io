@@ -1,0 +1,52 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Page non trouvée">
+    <div
+        class="flex flex-col items-center justify-center min-h-[60vh] text-center px-4"
+    >
+        <!-- Illustration animée -->
+        <div class="relative mb-8">
+            <div
+                class="text-[12rem] md:text-[16rem] font-black text-primary-100 select-none leading-none"
+            >
+                404
+            </div>
+            <div
+                class="absolute inset-0 flex items-center justify-center animate-pulse"
+            >
+                <span class="text-6xl md:text-8xl">🔍</span>
+            </div>
+        </div>
+
+        <h1 class="text-3xl md:text-4xl font-bold text-dark-500 mb-3">
+            Page introuvable
+        </h1>
+        <p class="text-lg text-dark-400 mb-10 max-w-lg leading-relaxed">
+            Désolé, la page que vous recherchez semble s'être égarée dans le
+            cyberespace. Elle n'existe pas ou a changé de serveur.
+        </p>
+
+        <!-- Bouton principal -->
+        <a
+            href="/"
+            class="inline-flex items-center gap-3 px-8 py-4 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 shadow-md hover:shadow-lg transition-all duration-300"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="white"
+                stroke-width="2.5"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>
+            Retour à l'accueil
+        </a>
+    </div>
+</Layout>
