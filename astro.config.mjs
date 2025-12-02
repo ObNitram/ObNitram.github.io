@@ -7,6 +7,7 @@ import icon from "astro-icon";
 import mdx from "@astrojs/mdx";
 import remarkDirective from "remark-directive";
 import { remarkAlert } from "remark-github-blockquote-alert";
+import { rehypeAccessibleEmojis } from "rehype-accessible-emojis";
 import mermaid from "astro-mermaid";
 
 
@@ -17,6 +18,7 @@ export default defineConfig({
     site: "https://obnitram.cloud/",
     markdown: {
         remarkPlugins: [remarkDirective, remarkAlert],
+        rehypePlugins: [rehypeAccessibleEmojis],
     },
     integrations: [
         tailwind(),
