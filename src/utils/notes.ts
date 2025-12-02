@@ -1,5 +1,10 @@
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
+
+export interface NoteWithReadTime {
+    note: CollectionEntry<'notes'>;
+    readTime: string;
+}
 
 export async function getNotesWithTags(): Promise<CollectionEntry<'notes'>[]> {
     const notes = await getCollection('notes');
@@ -20,4 +25,20 @@ export async function getNotesWithTags(): Promise<CollectionEntry<'notes'>[]> {
             }
         };
     });
+}
+
+export async function getNotesWithReadTime(): Promise<NoteWithReadTime[]> {
+    const notes = await getNotesWithTags();
+
+    const notesWithReadTime = await Promise.all(
+        notes.map(async (note) => {
+            const { remarkPluginFrontmatter } = await render(note);
+            return {
+                note,
+                readTime: remarkPluginFrontmatter.readTime as string,
+            };
+        })
+    );
+
+    return notesWithReadTime;
 }

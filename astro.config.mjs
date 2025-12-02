@@ -8,6 +8,7 @@ import mdx from "@astrojs/mdx";
 import remarkDirective from "remark-directive";
 import { remarkAlert } from "remark-github-blockquote-alert";
 import { rehypeAccessibleEmojis } from "rehype-accessible-emojis";
+import { remarkReadingTime } from "./src/plugins/remark-reading-time";
 import mermaid from "astro-mermaid";
 
 
@@ -17,7 +18,7 @@ const isProd = process.env.NODE_ENV === "production";
 export default defineConfig({
     site: "https://obnitram.cloud/",
     markdown: {
-        remarkPlugins: [remarkDirective, remarkAlert],
+        remarkPlugins: [remarkDirective, remarkAlert, remarkReadingTime],
         rehypePlugins: [rehypeAccessibleEmojis],
     },
     integrations: [

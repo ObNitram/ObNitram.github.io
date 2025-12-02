@@ -5,11 +5,12 @@ import NoteTag from "./NoteTag.astro";
 
 interface Props {
     note: CollectionEntry<"notes">;
+    readTime?: string;
     class?: string;
     [key: string]: any;
 }
 
-const { note, class: className, ...rest } = Astro.props;
+const { note, readTime, class: className, ...rest } = Astro.props;
 const { title, date, tags } = note.data;
 const url = `/note/${note.slug}`;
 
@@ -38,17 +39,30 @@ const formattedDate = date
                 {title}
             </a>
         </h2>
-        {
-            formattedDate && (
-                <p class="text-sm text-slate-500 whitespace-nowrap ml-2 flex items-center gap-1 leading-none">
-                    <Icon
-                        name="heroicons-outline:calendar"
-                        class="h-4 w-4 mr-1 text-slate-400 shrink-0 align-middle"
-                    />
-                    {formattedDate}
-                </p>
-            )
-        }
+        <div class="flex flex-col items-end gap-1 ml-2">
+            {
+                formattedDate && (
+                    <p class="text-sm text-slate-500 whitespace-nowrap flex items-center gap-1 leading-none">
+                        <Icon
+                            name="heroicons-outline:calendar"
+                            class="h-4 w-4 mr-1 text-slate-400 shrink-0 align-middle"
+                        />
+                        {formattedDate}
+                    </p>
+                )
+            }
+            {
+                readTime && (
+                    <p class="text-sm text-slate-400 whitespace-nowrap flex items-center gap-1 leading-none">
+                        <Icon
+                            name="heroicons-outline:clock"
+                            class="h-4 w-4 mr-1 text-slate-300 shrink-0 align-middle"
+                        />
+                        {readTime}
+                    </p>
+                )
+            }
+        </div>
     </div>
 
     {

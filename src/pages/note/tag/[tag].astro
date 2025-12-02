@@ -1,27 +1,27 @@
 ---
 import Layout from "../../../layouts/Layout.astro";
 import NoteThumbnail from "../../../components/NoteThumbnail.astro";
-import { getNotesWithTags } from "../../../utils/notes";
+import { getNotesWithReadTime } from "../../../utils/notes";
 
 export async function getStaticPaths() {
-  const allNotes = await getNotesWithTags();
+  const allNotesWithReadTime = await getNotesWithReadTime();
   const uniqueTags = [
-    ...new Set(allNotes.flatMap((note) => note.data.tags || [])),
+    ...new Set(allNotesWithReadTime.flatMap((n) => n.note.data.tags || [])),
   ];
 
   return uniqueTags.map((tag) => {
-    const filteredNotes = allNotes.filter(
-      (note) => note.data.tags && note.data.tags.includes(tag),
+    const filteredNotes = allNotesWithReadTime.filter(
+      (n) => n.note.data.tags && n.note.data.tags.includes(tag),
     );
     return {
       params: { tag },
-      props: { notes: filteredNotes },
+      props: { notesWithReadTime: filteredNotes },
     };
   });
 }
 
 const { tag } = Astro.params;
-const { notes } = Astro.props;
+const { notesWithReadTime } = Astro.props;
 ---
 
 <Layout title={`Notes tagged #${tag}`}>
@@ -35,6 +35,10 @@ const { notes } = Astro.props;
   </div>
 
   <div class="grid gap-4">
-    {notes.map((note) => <NoteThumbnail note={note} />)}
+    {
+      notesWithReadTime.map(({ note, readTime }) => (
+        <NoteThumbnail note={note} readTime={readTime} />
+      ))
+    }
   </div>
 </Layout>

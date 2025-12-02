@@ -2,10 +2,12 @@
 import Layout from "../../layouts/Layout.astro";
 import NoteThumbnail from "../../components/NoteThumbnail.astro";
 import NoteTag from "../../components/NoteTag.astro";
-import { getNotesWithTags } from "../../utils/notes";
+import { getNotesWithReadTime } from "../../utils/notes";
 
-const notes = await getNotesWithTags();
-const allTags = [...new Set(notes.flatMap((note) => note.data.tags || []))];
+const notesWithReadTime = await getNotesWithReadTime();
+const allTags = [
+  ...new Set(notesWithReadTime.flatMap((n) => n.note.data.tags || [])),
+];
 ---
 
 <Layout title="Personal Notes">
@@ -48,9 +50,10 @@ const allTags = [...new Set(notes.flatMap((note) => note.data.tags || []))];
 
   <div class="grid gap-4" id="notes-grid">
     {
-      notes.map((note) => (
+      notesWithReadTime.map(({ note, readTime }) => (
         <NoteThumbnail
           note={note}
+          readTime={readTime}
           data-tags={JSON.stringify(note.data.tags || [])}
           data-title={note.data.title.toLowerCase()}
         />

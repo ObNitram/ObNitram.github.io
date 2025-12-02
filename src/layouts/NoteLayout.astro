@@ -35,9 +35,10 @@ interface Props {
     };
     headings?: Heading[];
     slug?: string;
+    readTime?: string;
 }
 
-const { frontmatter, headings = [], slug = "" } = Astro.props;
+const { frontmatter, headings = [], slug = "", readTime } = Astro.props;
 const pageTitle = frontmatter?.title || "Note - Martin Guillemot";
 const tags = frontmatter?.tags || [];
 const date = frontmatter?.date;
@@ -232,6 +233,18 @@ const formattedDate = date
                                                 class="h-4 w-4 mr-1 text-slate-400 shrink-0 align-middle"
                                             />
                                             {formattedDate}
+                                        </div>
+                                    )
+                                }
+
+                                {
+                                    readTime && (
+                                        <div class="flex items-center gap-1 leading-none">
+                                            <Icon
+                                                name="heroicons-outline:clock"
+                                                class="h-4 w-4 mr-1 text-slate-400 shrink-0 align-middle"
+                                            />
+                                            {readTime}
                                         </div>
                                     )
                                 }
