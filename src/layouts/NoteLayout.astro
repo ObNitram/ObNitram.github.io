@@ -312,12 +312,12 @@ const formattedDate = date
         <!-- Script pour highlight du sommaire au scroll -->
         <script>
             document.addEventListener("DOMContentLoaded", () => {
-                const tocLinks = document.querySelectorAll("aside nav a");
+                const desktopTocLinks = document.querySelectorAll("aside nav a");
                 const headings = document.querySelectorAll(
                     "article h2[id], article h3[id]",
                 );
 
-                if (tocLinks.length === 0 || headings.length === 0) return;
+                if (desktopTocLinks.length === 0 || headings.length === 0) return;
 
                 const observerOptions = {
                     rootMargin: "-80px 0px -70% 0px",
@@ -326,44 +326,53 @@ const formattedDate = date
 
                 let currentActive: Element | null = null;
 
+                function setActiveLink(tocLink: Element | null) {
+                    // Remove active state from previous
+                    if (currentActive) {
+                        currentActive.classList.remove(
+                            "border-primary-600",
+                            "text-primary-600",
+                        );
+                        currentActive.classList.add(
+                            "border-transparent",
+                            "text-slate-500",
+                        );
+                    }
+
+                    if (tocLink) {
+                        tocLink.classList.remove(
+                            "border-transparent",
+                            "text-slate-500",
+                            "text-slate-400",
+                        );
+                        tocLink.classList.add(
+                            "border-primary-600",
+                            "text-primary-600",
+                        );
+                        currentActive = tocLink;
+                    }
+                }
+
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach((entry) => {
                         if (entry.isIntersecting) {
-                            // Remove active state from previous
-                            if (currentActive) {
-                                currentActive.classList.remove(
-                                    "border-primary-600",
-                                    "text-primary-600",
-                                );
-                                currentActive.classList.add(
-                                    "border-transparent",
-                                    "text-slate-500",
-                                );
-                            }
-
-                            // Find corresponding TOC link
                             const id = entry.target.getAttribute("id");
                             const tocLink = document.querySelector(
                                 `aside nav a[href="#${id}"]`,
                             );
-
-                            if (tocLink) {
-                                tocLink.classList.remove(
-                                    "border-transparent",
-                                    "text-slate-500",
-                                    "text-slate-400",
-                                );
-                                tocLink.classList.add(
-                                    "border-primary-600",
-                                    "text-primary-600",
-                                );
-                                currentActive = tocLink;
-                            }
+                            setActiveLink(tocLink);
                         }
                     });
                 }, observerOptions);
 
                 headings.forEach((heading) => observer.observe(heading));
+
+                // Update on click immediately
+                desktopTocLinks.forEach((link) => {
+                    link.addEventListener("click", (e) => {
+                        setActiveLink(link);
+                    });
+                });
             });
 
             // Mobile TOC functionality
