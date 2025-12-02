@@ -250,6 +250,65 @@ const formattedDate = date
 
         <Footer />
 
+        <!-- Mobile TOC Button & Panel -->
+        {tocHeadings.length > 0 && (
+            <>
+                <!-- Floating button -->
+                <button
+                    id="toc-mobile-btn"
+                    class="xl:hidden fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-3 bg-primary-600 text-white rounded-full shadow-lg hover:bg-primary-700 transition-all"
+                    aria-label="Ouvrir le sommaire"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" />
+                    </svg>
+                    <span class="text-sm font-medium">Sommaire</span>
+                </button>
+
+                <!-- Backdrop -->
+                <div
+                    id="toc-backdrop"
+                    class="xl:hidden fixed inset-0 bg-black/50 z-40 opacity-0 pointer-events-none transition-opacity duration-300"
+                ></div>
+
+                <!-- Bottom sheet -->
+                <div
+                    id="toc-mobile-panel"
+                    class="xl:hidden fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl shadow-2xl transform translate-y-full transition-transform duration-300 ease-out max-h-[70vh] overflow-hidden"
+                >
+                    <div class="flex items-center justify-between p-4 border-b border-slate-200">
+                        <h2 class="text-lg font-bold text-slate-900">Sommaire</h2>
+                        <button
+                            id="toc-mobile-close"
+                            class="p-2 text-slate-400 hover:text-slate-600 transition-colors"
+                            aria-label="Fermer le sommaire"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <nav class="p-4 overflow-y-auto max-h-[calc(70vh-60px)]">
+                        <ul class="space-y-1">
+                            {tocHeadings.map((heading) => (
+                                <li>
+                                    <a
+                                        href={`#${heading.slug}`}
+                                        class:list={[
+                                            "toc-mobile-link block py-2 px-3 rounded-lg text-slate-600 hover:bg-slate-100 hover:text-primary-600 transition-colors",
+                                            heading.depth === 2 ? "font-medium" : "pl-6 text-sm text-slate-500",
+                                        ]}
+                                    >
+                                        {heading.text}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
+                </div>
+            </>
+        )}
+
         <!-- Script pour highlight du sommaire au scroll -->
         <script>
             document.addEventListener("DOMContentLoaded", () => {
@@ -305,6 +364,43 @@ const formattedDate = date
                 }, observerOptions);
 
                 headings.forEach((heading) => observer.observe(heading));
+            });
+
+            // Mobile TOC functionality
+            const tocBtn = document.getElementById('toc-mobile-btn');
+            const tocPanel = document.getElementById('toc-mobile-panel');
+            const tocBackdrop = document.getElementById('toc-backdrop');
+            const tocClose = document.getElementById('toc-mobile-close');
+            const tocLinks = document.querySelectorAll('.toc-mobile-link');
+
+            function openToc() {
+                tocPanel?.classList.remove('translate-y-full');
+                tocBackdrop?.classList.remove('opacity-0', 'pointer-events-none');
+                tocBackdrop?.classList.add('opacity-100');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeToc() {
+                tocPanel?.classList.add('translate-y-full');
+                tocBackdrop?.classList.add('opacity-0', 'pointer-events-none');
+                tocBackdrop?.classList.remove('opacity-100');
+                document.body.style.overflow = '';
+            }
+
+            tocBtn?.addEventListener('click', openToc);
+            tocClose?.addEventListener('click', closeToc);
+            tocBackdrop?.addEventListener('click', closeToc);
+
+            // Close when clicking a link
+            tocLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    closeToc();
+                });
+            });
+
+            // Close on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeToc();
             });
         </script>
     </body>
