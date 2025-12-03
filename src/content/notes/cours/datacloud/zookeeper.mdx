@@ -4,22 +4,72 @@ date: 2025-12-02
 tags: []
 ---
 
+
+Besoin essentiel dans les systèmes distribués :
 - Mécanisme d'élection de leader
 - Détecter les pannes/les nouvelles machines
 - Stockage des méta-données du système
-- 
+- Mécanisme de synchronisation fiable
 
 
 ## C'est quoi ZooKeeper ?
 
-Un entrepôt de données développé en java
-
+Un entrepôt de données développé en java avec un espace de staockage global.
 - arborescent => organisation hiérarchique des données
 - persistante => données sauvegardées et restaurables
-- ...
+- répliquée => données toujours accessible même en cas de panne
+- séquentiellement cohérent => ordre total sur les écritures
+- observable => notification des changements aux clients
+
+Il offre un service de nommage et implemente des primitives de synchronisation distribuée comme :
+- élection de leader
+- supervision
+- synchronisation (barrières, verrous distribués)
+- diffusion de messages
+
 
 > [!IMPORTANT]
 > Permet de gérer un état global mais pas une bdd. 
 > La capacité de stockage est limitée (quelques méga-octets).
 
+
+### Fonctionnement
+
+C'est un système maître-esclave.
+Le client doit établir une connexion et maintenir une session (Heartbeats).
+
+> [!IMPORTANT]
+> Une session implique **deux** threads côté client :
+> - thread principal du programme
+> - un thread pour les rappel/notifications de ZooKeeper
+
+Il y a un système clé/valeur organisé en arborescence. Les nœuds sont appelés des *znodes*.
+Les valeurs sont non typées et peuvent contenir jusqu'à 1 Mo de données.
+
+Opérations d'écriture : set, create, delete(si pas d'enfants)
+Opérations de lecture : get, exists, getChildren
+Possible de `watch` une znode pour être notifé **uniquement** de la prochaine modification.
+
+> [!CAUTION]
+> Le nouvel état du znode n'est pas transmis dans la notification. Le client doit relire la znode pour obtenir la nouvelle valeur.  
+
+> [!TIP]
+> **cohérence séquentielle** : tous les serveurs voient les modifications dans le même ordre.
+
+### Type de serveur 
+
+**le leader** : serveur central pour séquencer toutes les transactions => désigné par une élection de leader.
+**les followers** : votent les transactions proposées par le leader
+**les observers** : ne votent pas, reçoivent les mises à jour du leader => utile pour la scalabilité en lecture seule.
+
+> [!CAUTION]
+> En production le nombre de serveurs doit être impair et >= 3.
+
+
+Une élection se déclenche dés qu'il n'y a pas ou plus de leader.
+Chaque serveur possède deux entiers :
+- son sid : un identifiant défini statiquement 
+- son zxid : la dernière transaction pris en compte
+
+**Le leader doit être le serveur opérationnel ayant le plus grand zxid ou bien le plus grand sid en cas d’égalité de zxid.**
 
