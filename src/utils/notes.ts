@@ -6,10 +6,34 @@ export interface NoteWithReadTime {
     readTime: string;
 }
 
+/**
+ * Get the URL-safe slug from a note's id.
+ * Preserves the original filename casing.
+ * Removes the .mdx extension.
+ */
+export function getNoteSlug(note: CollectionEntry<'notes'>): string {
+    // note.id includes the file extension, e.g., "cours/nmv/Cours 2 - La mémoire.mdx"
+    return note.id.replace(/\.mdx?$/, '');
+}
+
+/**
+ * Get the URL-encoded slug for use in href attributes.
+ * Encodes spaces and special characters.
+ */
+export function getNoteUrl(note: CollectionEntry<'notes'>): string {
+    const slug = getNoteSlug(note);
+    // Encode each path segment to handle spaces and special characters
+    return slug
+        .split('/')
+        .map(segment => encodeURIComponent(segment))
+        .join('/');
+}
+
 export async function getNotesWithTags(): Promise<CollectionEntry<'notes'>[]> {
     const notes = await getCollection('notes');
     return notes.map(note => {
-        const slugParts = note.slug.split('/');
+        const slug = getNoteSlug(note);
+        const slugParts = slug.split('/');
         // Remove the last part (filename) to get directory tags
         const directoryTags = slugParts.slice(0, -1);
         const existingTags = note.data.tags || [];

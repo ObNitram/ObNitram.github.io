@@ -2,6 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import { Icon } from "astro-icon/components";
 import NoteTag from "./NoteTag.astro";
+import { getNoteUrl } from "../utils/notes";
 
 interface Props {
     note: CollectionEntry<"notes">;
@@ -12,7 +13,7 @@ interface Props {
 
 const { note, readTime, class: className, ...rest } = Astro.props;
 const { title, date, tags } = note.data;
-const url = `/note/${note.slug}`;
+const url = `/note/${getNoteUrl(note)}`;
 
 const formattedDate = date
     ? new Date(date).toLocaleDateString("en-US", {
