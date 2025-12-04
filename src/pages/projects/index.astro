@@ -1,53 +1,107 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
 
 const projects = [
   {
-    title: "GlobalGameJam2023",
-    description: "A Unity 3D game created for the Global Game Jam 2023. Experience our unique gameplay directly in your web browser!",
+    title: "GGJ - 2023",
+    description: "A Unity 3D game created for the Global Game Jam 2023.",
     tags: ["C#", "Unity 3D", "Game Jam"],
-    link: "https://github.com/ObNitram/GlobalGameJam2023"
+    link: "https://github.com/ObNitram/GlobalGameJam2023",
+    color: "from-purple-500 to-indigo-600"
   },
   {
     title: "sorbonne-calendar",
-    description: "Tool related to the university calendar.",
+    description: "A Python tool which fetches and converts Sorbonne University academic calendars into iCal format every 20 minutes with a GitHub action.",
     tags: ["Python"],
-    link: "https://github.com/ObNitram/sorbonne-calendar"
+    link: "https://github.com/ObNitram/sorbonne-calendar",
+    color: "from-emerald-500 to-teal-600"
   },
   {
-    title: "Personal Portfolio",
-    description: "This website! Built with Astro and Tailwind CSS for maximum performance.",
-    tags: ["Astro", "Tailwind"],
-    link: "https://github.com/ObNitram"
+    title: "git-release",
+    description: "Minimal tool to create and publish Git release tags following the vX.Y.Z format.",
+    tags: ["bash"],
+    link: "https://github.com/ObNitram/git-release",
+    color: "from-yellow-500 to-amber-600"
+  },
+  {
+    title: "MaintKit",
+    description: "A CMMS web application and mobile app to help small and medium-sized businesses manage their maintenance operations efficiently.",
+    tags: ["Flutter", "PostgreSQL", "PostgREST", "Nginx", "Docker", "Traefik", "Deno"],
+    link: "https://maintkit.cloud",
+    color: "from-emerald-500 to-teal-600"
   }
 ];
 ---
 
 <Layout title="Projects - Martin Guillemot">
-  <h1 class="text-3xl font-bold mb-8 text-primary-600">My Projects</h1>
-  
-  <div class="grid gap-6 md:grid-cols-2">
-    {projects.map((project) => (
-      <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-100 flex flex-col">
-        <h2 class="text-2xl font-bold mb-3 text-dark-500">{project.title}</h2>
-        <p class="text-slate-600 mb-4 flex-grow">{project.description}</p>
-        <div class="flex flex-wrap gap-2 mb-4">
-          {project.tags.map((tag) => (
-            <span class="bg-slate-100 text-slate-700 px-2 py-1 rounded text-sm font-medium">
-              {tag}
-            </span>
-          ))}
-        </div>
-        <a href={project.link} target="_blank" rel="noopener noreferrer" class="inline-block bg-primary-500 text-white px-4 py-2 rounded hover:bg-primary-600 transition-colors text-center">
-          View project
+  <div class="max-w-4xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-4xl font-bold mb-4 text-dark-500">
+        My <span class="text-primary-600">Projects</span>
+      </h1>
+      <p class="text-slate-500 text-lg max-w-2xl mx-auto">
+        A selection of personal and collaborative projects I've worked on.
+      </p>
+    </div>
+    
+    <!-- Projects Grid -->
+    <div class="grid gap-8 md:grid-cols-2">
+      {projects.map((project) => (
+        <a 
+          href={project.link} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="group relative bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col"
+        >
+          <!-- Gradient Header -->
+          <div class={`h-2 bg-gradient-to-r ${project.color}`}></div>
+          
+          <div class="p-6 flex flex-col flex-grow">
+            <!-- Icon & Title -->
+            <div class="flex items-start gap-4 mb-4">
+                <h2 class="text-xl font-bold text-dark-500 group-hover:text-primary-600 transition-colors truncate">
+                  {project.title}
+                </h2>
+            </div>
+            
+            <!-- Description -->
+            <p class="text-slate-600 mb-5 leading-relaxed flex-grow">
+              {project.description}
+            </p>
+            
+            <!-- Tags (pushed to bottom) -->
+            <div class="mt-auto">
+              <!-- Tags -->
+              <div class="flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-sm font-medium group-hover:bg-slate-200 transition-colors">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+    
+    <!-- Footer CTA -->
+    <div class="mt-16 text-center">
+      <div class="inline-flex flex-col items-center gap-4 p-8 bg-gradient-to-br from-slate-50 to-slate-100 rounded-2xl border border-slate-200">
+        <Icon name="mdi:github" class="w-12 h-12 text-slate-700" />
+        <p class="text-slate-600">Want to see more of my work?</p>
+        <a 
+          href="https://github.com/ObNitram?tab=repositories" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="inline-flex items-center gap-2 bg-slate-800 text-white px-6 py-3 rounded-full font-medium hover:bg-slate-900 transition-colors shadow-lg hover:shadow-xl"
+        >
+          <span>Explore all repositories</span>
+          <Icon name="heroicons-outline:external-link" class="w-4 h-4" />
         </a>
       </div>
-    ))}
-  </div>
-  
-  <div class="mt-12 text-center">
-    <a href="https://github.com/ObNitram?tab=repositories" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:underline font-medium text-lg">
-      View all my projects on GitHub &rarr;
-    </a>
+    </div>
   </div>
 </Layout>
