@@ -68,9 +68,11 @@ const formattedDate = date
 
     {
         tags && tags.length > 0 && (
-            <div class="mt-3 flex flex-wrap gap-2 relative z-10">
+            <div class="mt-3 flex flex-wrap gap-2 relative z-10 pointer-events-none">
                 {tags.map((tag) => (
-                    <NoteTag tag={tag} />
+                    <span class="pointer-events-auto">
+                        <NoteTag tag={tag} />
+                    </span>
                 ))}
             </div>
         )
