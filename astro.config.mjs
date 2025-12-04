@@ -17,6 +17,7 @@ const isProd = process.env.NODE_ENV === "production";
 // https://astro.build/config
 export default defineConfig({
     site: "https://obnitram.cloud/",
+    base: "/",
     markdown: {
         remarkPlugins: [remarkDirective, remarkAlert, remarkReadingTime],
         rehypePlugins: [rehypeAccessibleEmojis],
@@ -38,7 +39,6 @@ export default defineConfig({
             autoTheme: true
         }),
     ],
-    base: "/",
     vite: {
         define: {
             global: "globalThis",
