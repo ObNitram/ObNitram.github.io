@@ -11,6 +11,9 @@ import { rehypeAccessibleEmojis } from "rehype-accessible-emojis";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time";
 import mermaid from "astro-mermaid";
 
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -19,8 +22,8 @@ export default defineConfig({
     site: "https://obnitram.cloud/",
     base: "/",
     markdown: {
-        remarkPlugins: [remarkDirective, remarkAlert, remarkReadingTime],
-        rehypePlugins: [rehypeAccessibleEmojis],
+        remarkPlugins: [remarkDirective, remarkAlert, remarkReadingTime, remarkMath],
+        rehypePlugins: [rehypeAccessibleEmojis, rehypeKatex],
     },
     integrations: [
         tailwind(),
