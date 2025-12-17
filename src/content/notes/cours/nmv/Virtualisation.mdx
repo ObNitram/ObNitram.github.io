@@ -1,0 +1,62 @@
+---
+title: Virtualisation
+date: 2025-12-17
+tags: []
+---
+
+
+##
+
+Cela permet une simulaion au cycle près.
+
+Isolation des contexts => traduction adresse virtuelle/physique.
+
+
+Simuler : Reproduire le comportement d'un système sur un autre système completement en partant de rien.
+
+Emuler : Reproduire le comportement d'un système sur un autre système en partant d'un système existant.
+
+
+1970 : VMM : Virtual Machine Monitor
+
+
+L'hyperviseur : couche technique qui permet de fournir les services de virtualisation.
+- Émulation MMU
+- Traduction des instructions
+
+
+Le VMM est le manager des machines virtuelles. Plus haut niveau, qui permet de gérer.
+
+Types d'hyperviseurs :
+- Type 1 : S'exécute en mode privilégié, il est l'unique programme hôte. -> VMware ESX
+- Type 2 : S'exécute en mode utilisateur, concurrence avec d'autres programmes hôtes. -> VirtualBox
+
+> [!note]
+> Mode U et S sont des concepts matériels. Ils sont vérifié par le CPU.
+
+
+Qemu : Hyperviseur de type 2. Permet d'émuler des architectures complètes.
+Qemu-KVM : Hyperviseur de type 1.5 . KVM est un module noyau qui permet d'utiliser les extensions de virtualisation matérielle (Intel VT-x, AMD-V).
+
+
+## Émulation d'instructions
+
+Un language de script est un language optimisé pour lancer des programmes et manipuler des fichiers.
+
+Transpilation :
+Compilation :
+
+> [!note]
+> Un **basic block** est une séquence d'instructions sans saut et sans instruction privilégiée.
+> Les basic blocks sont compilés vers le jeu d'instructions de l'hôte si ils sont rencontrés fréquemment.
+> - Cette compilation s'appelle une Dynamic Binary Translation (DBT).
+
+## 
+
+GVA : Guest Virtual Address
+GPA : Guest Physical Address
+HPA : Host Physical Address
+HPA : Host Physical Address
+
+
+
