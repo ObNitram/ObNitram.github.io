@@ -1,0 +1,47 @@
+---
+title: TP Self-stabilization
+date: 2025-12-16
+tags: []
+---
+
+
+DD 
+- DS 
+- DC 
+
+
+## Q1
+Hyp: Au moins une copie de tout message émis pas un noeud arrive à son destinataire en temps fini.
+Hyp : S'il ne reste qu'un seul processus activable alors le démon ne peut pas empêcher l'exécution d'une action
+
+## Q2
+Pour contradiction. Supposons qu'il existe une configuration Fe telle que aucun processus ne détient le jeton. Par définition,
+Vi E [1..n-1], ci-1 =ci
+Par conséquent, on a : c0=c1 ... = cn-1 = Fe . Mais par hyp., P0 ne détient pas de jeton, donc (R1) ne doit pas pouvoir être activable.
+Absurde puisque cn-1=c0 (par construction d'hyp.)
+
+## Q3
+Il suffit de prouver que tout noeud est infiniment souvent activé. Par contradiction, supposons qu'il existe une configuration
+F0 à partir de laquelle un noeud Pi n'est plus jamais activé.
+Cependant, par la question 2, on sait que dans toute configuration, il existe un noeud activable.
+Donc, toute execution est infinie. Soit j E [0..n-1] tel que Pj est infiniment souvent activé.
+Par construction de l'algorithme, on peut déduire que tout noeud Pk avec $0 \le k \le j$ est activé infiniment souvent.
+Comme k > n, on obtient que P0 introduit infiniment souvent une valeur $$ qui 
+
+$$
+0 \le k \le j 
+$$
+
+## Q4
+
+Supposons qu'on parte d'une configuration $\gamma_0$ avec 1 seul jeton (c'est à dire un seul noeud activable). Par Q3, on a la liveness (tout noeud detient le jeton uniquement souvent). Pour Q2, on sait que le jeton existant en $\gamma_0$ ne peut pas disparaitre (unicité). Donc, pour prouver la sureté, il ne reste plus qu'à montrer que le jeton ne peut pas être dupliqué.
+Deux cas :
+1. Le jeton est en 
+
+2.
+
+## Q5 
+Q3 => $P_0$ est infiniment souvent activé
+Comme $k > n$, $P_0$ introduit  en temps fini une valeur $\alpha$ qui n'existe pas 
+
+
