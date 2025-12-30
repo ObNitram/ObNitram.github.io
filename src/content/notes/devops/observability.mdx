@@ -1,0 +1,29 @@
+
+
+## Composants d'une plateforme d'observabilité
+
+### Grafana
+
+Plateforme de visualisation et d'analyse de données open-source, Grafana permet de créer des tableaux de bord interactifs pour surveiller les métriques, les logs et les traces provenant de diverses sources de données.
+
+
+### Prometheus
+
+Base de données de séries temporelles open-source conçue pour la surveillance et l'alerte. Prometheus collecte des métriques à partir de cibles configurées via des requêtes HTTP et stocke les données dans un format optimisé pour les séries temporelles.
+
+
+### Loki 
+
+Base de données de logs open-source développée par Grafana Labs. Loki est conçue pour être efficace en termes de stockage et permet de regrouper les logs par labels, facilitant ainsi la recherche et l'analyse des logs.
+
+
+### Elasticsearch
+
+Base de données de recherche et d'analyse distribuée de type NoSQL. Elasticsearch est souvent utilisé pour stocker et analyser de grandes quantités de données, y compris les logs et les métriques. Contrairement à Loki, Elasticsearch indexe les données, ce qui peut améliorer les performances de recherche mais augmente les besoins en stockage, cpu et ram.
+Utiliser avec [[Kibana]] pour la visualisation des données.
+
+
+### Jaeger
+
+Système de traçage distribué open-source développé par Uber. Jaeger permet de suivre les requêtes à travers les différents services d'une application distribuée, facilitant ainsi le diagnostic des performances et la détection des goulots d'étranglement. Il utilise le protocole OpenTelemetry pour la collecte des traces. Il faut donc l'utiliser avec des bibliothèques compatibles OpenTelemetry dans vos applications.
+
